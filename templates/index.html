@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rupee → Dollar Budget Tracker</title>
+    <style>
+        body {
+            font-family: Inter, sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            margin-top: 50px;
+            padding: 30px;
+            border-radius: 16px;
+            width: 460px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            display: block;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            margin-top: 5px;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn:hover { opacity: 0.85; }
+
+        .item-card {
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-btn {
+            background: red;
+            border: none;
+            padding: 6px 12px;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .delete-btn:hover { opacity: 0.85; }
+
+        .clear-btn {
+            width: 100%;
+            background: #d62828;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .total-box {
+            background: #eef2ff;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>💸 Rupee → Dollar Budget</h1>
+
+    <div class="total-box">
+        Total: ₹{{ total_rupees }} = ${{ "%.2f" | format(total_dollars) }}  
+        <br>
+        <small>Rate: 1 USD = ₹{{ rate }}</small>
+    </div>
+
+    <!-- Add Item Form -->
+    <form method="POST" action="/add">
+        <label>Item Name</label>
+        <input type="text" name="name" placeholder="e.g., Coffee, Uber, Shoes" required>
+
+        <label>Amount (₹ Rupees)</label>
+        <input type="number" name="rupees" step="0.01" required>
+
+        <label>Category</label>
+        <select name="category" required>
+            {% for cat in categories %}
+                <option>{{ cat }}</option>
+            {% endfor %}
+        </select>
+
+        <button class="btn" type="submit">Add Item</button>
+    </form>
+
+    <h2 style="margin-top:25px;">Items</h2>
+
+    {% for item in items %}
+    <div class="item-card">
+        <div>
+            <strong>{{ item.name }}</strong> <br>
+            <small>{{ item.category }}</small> <br>
+            ₹{{ item.rupees }} → ${{ item.dollars }}
+        </div>
+
+        <form method="POST" action="/delete/{{ loop.index0 }}">
+            <button class="delete-btn">Delete</button>
+        </form>
+    </div>
+    {% endfor %}
+
+    <form method="POST" action="/clear">
+        <button class="clear-btn" type="submit">Clear All</button>
+    </form>
+</div>
+
+</body>
+</html>
