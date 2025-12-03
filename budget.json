@@ -1,0 +1,25 @@
+{
+    "home_currency": "INR",
+    "exchange_rate": 90.17,
+    "categories": [
+        "Food",
+        "Transport",
+        "Accommodation",
+        "Entertainment",
+        "Miscellaneous"
+    ],
+    "transactions": [
+        {
+            "amount_inr": 1500.0,
+            "amount_usd": 16.64,
+            "description": "jeans",
+            "category": "Miscellaneous"
+        },
+        {
+            "amount_inr": 300.0,
+            "amount_usd": 3.33,
+            "description": "Lay's chips",
+            "category": "Food"
+        }
+    ]
+}
